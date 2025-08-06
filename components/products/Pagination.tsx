@@ -8,7 +8,7 @@ export default function Pagination() {
   const dispatch = useAppDispatch()
   const { currentPage, totalPages } = useAppSelector((state) => state.products)
 
-  if (totalPages <= 1) return null
+  // if (totalPages <= 1) return null
 
   const getPageNumbers = () => {
     const pages = []

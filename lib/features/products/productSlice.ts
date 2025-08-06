@@ -40,88 +40,63 @@ const initialState: ProductState = {
   itemsPerPage: 12,
   totalPages: 1,
 }
-const BASE_URL = 'https://api.escuelajs.co/api/v1';
+
+const BASE_URL = 'https://api.escuelajs.co/api/v1'
+
 // Async thunks
-export const fetchProducts = createAsyncThunk(
-  'products/fetchProducts',
-  async () => {
-    const response = await fetch(`${BASE_URL}/products?offset=0&limit=12`)
-    if (!response.ok) {
-      throw new Error('Failed to fetch products')
-    }
-    return response.json()
-  }
-)
+export const fetchProducts = createAsyncThunk('products/fetchProducts', async () => {
+  const response = await fetch(`${BASE_URL}/products`)
+  if (!response.ok) throw new Error('Failed to fetch products')
+  return response.json()
+})
 
-export const fetchCategories = createAsyncThunk(
-  'products/fetchCategories',
-  async () => {
-    const response = await fetch(`${BASE_URL}/categories`)
-    if (!response.ok) {
-      throw new Error('Failed to fetch categories')
-    }
-    return response.json()
-  }
-)
+export const fetchCategories = createAsyncThunk('products/fetchCategories', async () => {
+  const response = await fetch(`${BASE_URL}/categories`)
+  if (!response.ok) throw new Error('Failed to fetch categories')
+  return response.json()
+})
 
-export const fetchProduct = createAsyncThunk(
-  'products/fetchProduct',
-  async (id: number) => {
-    const response = await fetch(`${BASE_URL}/products/${id}`)
-    if (!response.ok) {
-      throw new Error('Failed to fetch product')
-    }
-    return response.json()
-  }
-)
+export const fetchProduct = createAsyncThunk('products/fetchProduct', async (id: number) => {
+  const response = await fetch(`${BASE_URL}/products/${id}`)
+  if (!response.ok) throw new Error('Failed to fetch product')
+  return response.json()
+})
 
 export const createProduct = createAsyncThunk(
   'products/createProduct',
   async (productData: { title: string; price: number; description: string; categoryId: number; images: string[] }) => {
     const response = await fetch(`${BASE_URL}/products/`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(productData),
     })
-    if (!response.ok) {
-      throw new Error('Failed to create product')
-    }
+    if (!response.ok) throw new Error('Failed to create product')
     return response.json()
   }
 )
 
 export const updateProduct = createAsyncThunk(
   'products/updateProduct',
-  async ({ id, ...productData }: { id: number; title: string; price: number; description: string, categoryId: number, images:string[] }) => {
+  async ({ id, ...productData }: { id: number; title: string; price: number; description: string; categoryId: number; images: string[] }) => {
     const response = await fetch(`${BASE_URL}/products/${id}`, {
       method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(productData),
     })
-    if (!response.ok) {
-      throw new Error('Failed to update product')
-    }
+    if (!response.ok) throw new Error('Failed to update product')
     return response.json()
   }
 )
 
-export const deleteProduct = createAsyncThunk(
-  'products/deleteProduct',
-  async (id: number) => {
-    const response = await fetch(`${BASE_URL}/products/${id}`, {
-      method: 'DELETE',
-    })
-    if (!response.ok) {
-      throw new Error('Failed to delete product')
-    }
-    return id
-  }
-)
+export const deleteProduct = createAsyncThunk('products/deleteProduct', async (id: number) => {
+  const response = await fetch(`${BASE_URL}/products/${id}`, {
+    method: 'DELETE',
+  })
+  if (!response.ok) throw new Error('Failed to delete product')
+  return id
+})
 
+// Slice
 const productSlice = createSlice({
   name: 'products',
   initialState,
@@ -196,10 +171,11 @@ const productSlice = createSlice({
   },
 })
 
+// Filtering and pagination logic
 function filterProducts(state: ProductState) {
   let filtered = state.products
 
-  // Filter by search query
+  // Filter by search
   if (state.searchQuery) {
     filtered = filtered.filter(product =>
       product.title.toLowerCase().includes(state.searchQuery.toLowerCase())
@@ -213,9 +189,25 @@ function filterProducts(state: ProductState) {
     )
   }
 
+  // Final filtered results
   state.filteredProducts = filtered
-  state.totalPages = Math.ceil(filtered.length / state.itemsPerPage)
+
+  // Pagination logic
+  const totalPages = Math.max(1, Math.ceil(filtered.length / state.itemsPerPage))
+  state.totalPages = totalPages
+
+  // Adjust current page if out of range
+  if (state.currentPage > totalPages) {
+    state.currentPage = totalPages
+  }
 }
 
-export const { setSearchQuery, setSelectedCategory, setCurrentPage, clearCurrentProduct } = productSlice.actions
+// Exports
+export const {
+  setSearchQuery,
+  setSelectedCategory,
+  setCurrentPage,
+  clearCurrentProduct
+} = productSlice.actions
+
 export default productSlice.reducer

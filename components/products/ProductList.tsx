@@ -139,7 +139,7 @@ export default function ProductList() {
         </div>
 
         {/* Product Grid */}
-        {currentProducts.length === 0 ? (
+        {currentProducts?.length === 0 ? (
           <div className="text-center py-12">
             <Package className="w-16 h-16 text-gray-300 mx-auto mb-4" />
             <p className="text-xl font-semibold text-gray-500 mb-2">No products found</p>
@@ -148,11 +148,11 @@ export default function ProductList() {
         ) : (
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-              {currentProducts.map((product) => (
+              {currentProducts?.map((product) => (
                 <ProductCard 
-                  key={product.id} 
+                  key={product?.id} 
                   product={product} 
-                  onDelete={() => handleDeleteProduct(product.id)}
+                  onDelete={() => handleDeleteProduct(product?.id)}
                 />
               ))}
             </div>
