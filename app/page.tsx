@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation'
 import { GamepadIcon, ShoppingCart, ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import Link from 'next/link'
 
 export default function Home() {
   const router = useRouter()
@@ -31,14 +32,7 @@ export default function Home() {
 
   return (
     <div className="max-w-6xl mx-auto">
-      <div className="text-center mb-12">
-        <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-4">
-          Welcome to <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Assignments</span>
-        </h1>
-        <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-          Explore two comprehensive applications built with Next.js, Redux Toolkit, and TypeScript
-        </p>
-      </div>
+     
 
       <div className="grid md:grid-cols-2 gap-8">
         {assignments.map((assignment) => (
@@ -80,7 +74,7 @@ export default function Home() {
 
       <div className="mt-16 text-center">
         <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-8 border border-gray-200">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Built with Modern Technologies</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Built with Love By <span className='text-rose-600 italic font-black underline'><Link href="https://www.linkedin.com/in/rayhan-kabir29/" target='_blank'>Rayhan Kabir</Link></span> Using Modern Technologies Such As :</h2>
           <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600">
             {['Next.js', 'React', 'Redux Toolkit', 'TypeScript', 'Tailwind CSS'].map((tech) => (
               <span key={tech} className="px-3 py-1 bg-gray-100 rounded-full font-medium">
