@@ -67,8 +67,6 @@ App Router is used (/app directory instead of /pages)
 
 Shared Redux store setup for scalability
 
-shadcn/ui is installed per app – modular UI
-
 Forms are reusable and schema-safe with zod
 
 Uses Lucide-react for clean, modern icons
